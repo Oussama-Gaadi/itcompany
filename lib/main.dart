@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
 class FirstPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width / 3;  // Defining width
     return Scaffold(
       appBar: AppBar(
         title: Text("IT COMPANY"),
@@ -36,8 +37,9 @@ class FirstPage extends StatelessWidget {
             nameCompany(),
             wordCompany(),
             message(),
-            Divider(thickness: 1,),
+            Divider(thickness: 1),
             sectionTitle("SECTORS"),
+            allSectors(width),  // Pass width to allSectors
           ],
         ),
       ),
@@ -67,8 +69,9 @@ class FirstPage extends StatelessWidget {
       backgroundImage: AssetImage("images/bird.jpeg"),
     );
   }
-  Row nameCompany (){
-    return Row (
+
+  Row nameCompany() {
+    return Row(
       children: [
         Spacer(),
         Text(
@@ -76,13 +79,14 @@ class FirstPage extends StatelessWidget {
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 20 ,
+            fontSize: 20,
           ),
         ),
         Spacer(),
       ],
     );
   }
+
   Widget wordCompany() {
     return const Padding(
       padding: EdgeInsets.all(10),
@@ -96,6 +100,7 @@ class FirstPage extends StatelessWidget {
       ),
     );
   }
+
   Row message() {
     return Row(
       children: [
@@ -106,43 +111,44 @@ class FirstPage extends StatelessWidget {
       ],
     );
   }
-    TextFormField textFormField(){
-      return TextFormField(
-        style: const TextStyle(
-            color: Colors.white,
-        ),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.black,
-          hintText: "New Nessage....",
-          hintStyle: TextStyle(color: Colors.white54),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
 
-      );
-    }
-    TextButton textButton (){
-      return TextButton.icon(
-        onPressed: () => {},
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20)
-          ),
-          backgroundColor: Colors.black,
-          textStyle: const TextStyle(
-            fontSize: 20,
-            fontStyle: FontStyle.normal,
-          )
+  TextFormField textFormField() {
+    return TextFormField(
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.black,
+        hintText: "New Message....",
+        hintStyle: TextStyle(color: Colors.white54),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        icon: const Icon(
-          Icons.send,
-          color: Colors.grey,
+      ),
+    );
+  }
+
+  TextButton textButton() {
+    return TextButton.icon(
+      onPressed: () => {},
+      style: TextButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        label: const Text(''),
-      );
-    }
+        backgroundColor: Colors.black,
+        textStyle: const TextStyle(
+          fontSize: 20,
+          fontStyle: FontStyle.normal,
+        ),
+      ),
+      icon: const Icon(
+        Icons.send,
+        color: Colors.grey,
+      ),
+      label: const Text(''),
+    );
+  }
 
   Widget sectionTitle(String text) {
     return Padding(
@@ -151,13 +157,61 @@ class FirstPage extends StatelessWidget {
         text,
         style: const TextStyle(
           fontWeight: FontWeight.w300,
-          fontSize: 18 ,
+          fontSize: 18,
         ),
       ),
-
     );
-
-  }
   }
 
+  Widget allSectors(double width) {
+    Map<String, String> sectors = {
+      "Robotic": "images/robotic.jpg",
+      "Health": "images/health.jpg",
+      "Education": "images/education.jpg",
+      "Telecom": "images/telecom.jpg",
+      "Energy": "images/energy.jpg",
+      "Breeding": "images/breeding.jpg",
+    };
 
+    List<Widget> children = [];
+    sectors.forEach((name, imagePath) {
+      children.add(sectorsImage(name, imagePath, width));
+    });
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: children,
+      ),
+    );
+  }
+
+  Widget sectorsImage(String name, String imagePath, double width) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.all(5),
+          width: width,
+          height: width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(imagePath),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 5),  // Space between the image and the text
+        Text(
+          name,
+          style: TextStyle(
+            color: Colors.black,
+
+          ),
+        ),
+      ],
+    );
+  }
+}
